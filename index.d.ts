@@ -275,6 +275,9 @@ export interface WebApp {
    * A method that closes the Mini App.
    */
   close(): void;
+
+  //todo fix
+  onEvent(eventType: "themeChanged", eventHandler: () => void): void;
 }
 
 export interface WebAppInitData {}
