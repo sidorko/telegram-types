@@ -17,9 +17,9 @@ type WebView = unknown; //WIP
 export interface WebApp {
   /**
    * A string with raw data transferred to the Web App,
-   * convenient for {@link https://core.telegram.org/bots/webapps#validating-data-received-via-the-mini-app|validating data}.
+   * convenient for {@link https://core.telegram.org/bots/webapps#validating-data-received-via-the-mini-app| validating data}.
    *
-   * **WARNING:** {@link https://core.telegram.org/bots/webapps#validating-data-received-via-the-mini-app|Validate data} from this field before using it on the bot's server.
+   * **WARNING:** {@link https://core.telegram.org/bots/webapps#validating-data-received-via-the-mini-app| Validate data} from this field before using it on the bot's server.
    */
   initData: string;
 
@@ -44,7 +44,8 @@ export interface WebApp {
   /**
    * The color scheme currently used in the Telegram app.
    * Either “light” or “dark”.
-   * Also available as the CSS variable `var(--tg-color-scheme)`.
+   *
+   * Also, available as the CSS variable `var(--tg-color-scheme)`.
    */
   colorScheme: string;
 
@@ -69,7 +70,8 @@ export interface WebApp {
 
   /**
    * The current height of the visible area of the Mini App.
-   * Also available in CSS as the variable `var(--tg-viewport-height)`.
+   *
+   * Also, available in CSS as the variable `var(--tg-viewport-height)`.
    *
    * The application can display just the top part of the Mini App,
    * with its lower part remaining outside the screen area.
@@ -86,7 +88,8 @@ export interface WebApp {
 
   /**
    * The height of the visible area of the Mini App in its last stable state.
-   * Also available in CSS as a variable `var(--tg-viewport-stable-height)`.
+   *
+   * Also, available in CSS as a variable `var(--tg-viewport-stable-height)`.
    *
    * The application can display just the top part of the Mini App,
    * with its lower part remaining outside the screen area.
@@ -276,7 +279,25 @@ export interface WebApp {
 
 export interface WebAppInitData {}
 
-export interface ThemeParams {}
+export interface ThemeParams {
+  /**
+   * *Optional.*
+   * Button color in the `#RRGGBB` format.
+   *
+   * Also, available as the CSS variable `var(--tg-theme-button-color)`.
+   */
+  button_color: string;
+
+  /**
+   * *Optional.*
+   * Bottom background color in the `#RRGGBB` format.
+   *
+   * Also, available as the CSS variable `var(--tg-theme-bottom-bar-bg-color)`.
+   *
+   *  @since Bot API 7.10+
+   */
+  bottom_bar_bg_color: string;
+}
 
 export interface SafeAreaInset {}
 
@@ -322,10 +343,140 @@ export interface BackButton {
   hide(): BackButton;
 }
 
-export interface BottomButton {}
+/**
+ * This object controls the button that is displayed at the bottom of the Mini App in the Telegram interface.
+ *
+ * All these methods return the {@link BottomButton} object so they can be chained.
+ */
+export interface BottomButton {
+  /**
+   * Type of the button.
+   * It can be either *main* for the {@link MainButton|main button} or *secondary* for the {@link SecondaryButton|secondary button}.
+   *
+   * @readonly
+   */
+  type: 'main' | 'secondary';
+
+  /**
+   * Current button text.
+   * Set to *Continue* for the {@link MainButton|main button} and *Cancel* for the {@link SecondaryButton|secondary button} by default.
+   */
+  text: string;
+
+  /**
+   * Current button color.
+   * Set to {@link themeParams.button_color} for the {@link MainButton|main button} and {@link themeParams.bottom_bar_bg_color} for the {@link SecondaryButton|secondary button} by default.
+   */
+  color: string;
+
+  /**
+   * Current button text color.
+   * Set to {@link themeParams.button_text_color} for the {@link MainButton|main button} and {@link themeParams.button_color} for the {@link SecondaryButton|secondary button} by default.
+   */
+  textColor: string;
+
+  /**
+   * Shows whether the button is visible. Set to *false* by default.
+   */
+  isVisible: boolean;
+
+  /**
+   * Shows whether the button is active. Set to *true* by default.
+   */
+  isActive: boolean;
+
+  /**
+   * Shows whether the button has a shine effect. Set to *false* by default.
+   *
+   * @since Bot API 7.10+
+   */
+  hasShineEffect: boolean;
+
+  /**
+   * Position of the {@link SecondaryButton|secondary button}.
+   * Not defined for the {@link MainButton|main button}.
+   * It applies only if both the main and secondary buttons are visible.
+   * Set to *left* by default.
+   *
+   * @property left displayed to the left of the main button,
+   * @property right displayed to the right of the main button
+   * @property top displayed above the main button
+   * @property bottom displayed below the main button
+   *
+   * @since Bot API 7.10+
+   */
+  position: 'left' | 'right' | 'top' | 'bottom';
+
+  /**
+   * Shows whether the button is displaying a loading indicator.
+   *
+   * @readonly
+   */
+  isProgressVisible: boolean;
+
+  /**
+   * A method to set the button text.
+   */
+  setText(text: string): BottomButton;
+
+  /**
+   * A method that sets the button's press event handler.
+   * An alias for `Telegram.WebApp.onEvent('mainButtonClicked', callback)`
+   */
+  onClick(callback: ()=> void): BottomButton;
+
+  /**
+   * A method that removes the button's press event handler.
+   * An alias for `Telegram.WebApp.offEvent('mainButtonClicked', callback)`
+   */
+  offClick(callback: ()=> void): BottomButton;
+
+  /**
+   * A method to make the button visible.
+   *
+   * Note that opening the Mini App from the {@link https://core.telegram.org/bots/webapps#launching-mini-apps-from-the-attachment-menu| attachment menu} hides the main button until the user interacts with the Mini App interface.
+   */
+  show(): BottomButton;
+
+  /**
+   * A method to hide the button.
+   */
+  hide(): BottomButton;
+
+  /**
+   * A method to enable the button.
+   */
+  enable(): BottomButton;
+
+  /**
+   * A method to disable the button.
+   */
+  disable(): BottomButton;
+
+  /**
+   * A method to show a loading indicator on the button.
+   * It is recommended to display loading progress if the action tied to the button may take a long time.
+   * By default, the button is disabled while the action is in progress.
+   * If the parameter `leaveActive=true` is passed, the button remains enabled.
+   */
+  showProgress(leaveActive?: boolean): BottomButton;
+
+  /**
+   * A method to hide the loading indicator.
+   */
+  hideProgress(): BottomButton;
+
+  /**
+   * A method to set the button parameters.
+   * The *params* parameter is an object containing one or several fields that need to be changed:
+   */
+  setParams(params: BottomButtonParams): BottomButton;
+}
 
 /**
  * This object controls the **Settings** item in the context menu of the Mini App in the Telegram interface.
+ *
+ * All these methods return the {@link SettingsButton} object so they can be chained.
  */
 export interface SettingsButton {
   /**
@@ -382,3 +533,35 @@ export interface LocationManager {}
 export interface DeviceStorage {}
 
 export interface SecureStorage {}
+
+//todo fix
+export interface BottomButtonParams {
+  /**
+   button text
+   */
+  text?: string;
+  /**
+   button color
+   */
+  color?: string;
+  /**
+   button text color;
+   */
+  text_color?: string;
+  /**
+   Bot API 7.10+ enable shine effect
+   */
+  has_shine_effect?: boolean;
+  /**
+   position of the secondary button
+   */
+  position?: 'left' | 'right' | 'top' | 'bottom';
+  /**
+   enable the button
+   */
+  is_active?: boolean;
+  /**
+   show the button
+   */
+  is_visible?: boolean;
+}
