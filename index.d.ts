@@ -324,7 +324,46 @@ export interface BackButton {
 
 export interface BottomButton {}
 
-export interface SettingsButton {}
+/**
+ * This object controls the **Settings** item in the context menu of the Mini App in the Telegram interface.
+ */
+export interface SettingsButton {
+  /**
+   * Shows whether the context menu item is visible.
+   * Set to *false* by default.
+   */
+  isVisible: boolean;
+
+  /**
+   * A method that sets the press event handler for the Settings item in the context menu.
+   * An alias for `Telegram.WebApp.onEvent('settingsButtonClicked', callback)`
+   *
+   * @since Bot API 7.0+
+   */
+  onClick(callback: () => void): SettingsButton;
+
+  /**
+   * A method that removes the press event handler from the Settings item in the context menu.
+   * An alias for `Telegram.WebApp.offEvent('settingsButtonClicked', callback)`
+   *
+   * @since Bot API 7.0+
+   */
+  offClick(callback: () => void): SettingsButton;
+
+  /**
+   * A method to make the Settings item in the context menu visible.
+   *
+   * @since Bot API 7.0+
+   */
+  show(): SettingsButton;
+
+  /**
+   * A method to hide the Settings item in the context menu.
+   *
+   * @since Bot API 7.0+
+   */
+  hide(): SettingsButton;
+}
 
 export interface HapticFeedback {}
 
