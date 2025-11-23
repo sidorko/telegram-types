@@ -220,6 +220,8 @@ export interface WebApp {
    */
   SecureStorage: SecureStorage;
 
+  //todo here
+
   /**
    * A method that closes the native popup for scanning a QR code opened with the showScanQrPopup method.
    * Run it if you received valid data in the event qrTextReceived.
