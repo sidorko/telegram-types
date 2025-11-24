@@ -27,7 +27,7 @@ export interface WebApp {
    * An object with input data transferred to the Mini App.
    *
    * **WARNING:** Data from this field should not be trusted.
-   * You should only use data from {@link initData} on the bot's server and only after it has been {@link https://core.telegram.org/bots/webapps#validating-data-received-via-the-mini-app|validated}.
+   * You should only use data from {@link initData} on the bot's server and only after it has been {@link https://core.telegram.org/bots/webapps#validating-data-received-via-the-mini-app| validated}.
    */
   initDataUnsafe: WebAppInitData;
 
@@ -64,7 +64,7 @@ export interface WebApp {
 
   /**
    * *True*, if the Mini App is expanded to the maximum available height.
-   * (False*, if the Mini App occupies part of the screen and can be expanded to the full height using the {@link expand|expand()} method.
+   * (False*, if the Mini App occupies part of the screen and can be expanded to the full height using the {@link expand| expand()} method.
    */
   isExpanded:	boolean;
 
@@ -76,7 +76,7 @@ export interface WebApp {
    * The application can display just the top part of the Mini App,
    * with its lower part remaining outside the screen area.
    * From this position, the user can “pull” the Mini App to its maximum height,
-   * while the bot can do the same by calling the {@link expand|expand()} method.
+   * while the bot can do the same by calling the {@link expand| expand()} method.
    * As the position of the Mini App changes,
    * the current height value of the visible area will be updated in real time.
    *
@@ -94,7 +94,7 @@ export interface WebApp {
    * The application can display just the top part of the Mini App,
    * with its lower part remaining outside the screen area.
    * From this position, the user can “pull” the Mini App to its maximum height,
-   * while the bot can do the same by calling the {@link expand|expand()} method.
+   * while the bot can do the same by calling the {@link expand| expand()} method.
    * Unlike the value of {@link viewportHeight}, the value of {@link viewportStableHeight} does not change as the position of the Mini App changes with user gestures or during animations.
    * The value of {@link viewportStableHeight} will be updated after all gestures and animations are completed and the Mini App reaches its final size.
    *
@@ -267,7 +267,7 @@ export interface WebApp {
   /**
    * A method that expands the Mini App to the maximum available height.
    * To find out if the Mini App is expanded to the maximum height,
-   * refer to the value of the {@link isExpanded|Telegram.WebApp.isExpanded} parameter
+   * refer to the value of the {@link isExpanded| Telegram.WebApp.isExpanded} parameter
    */
   expand(): void;
 
@@ -354,7 +354,7 @@ export interface BackButton {
 export interface BottomButton {
   /**
    * Type of the button.
-   * It can be either *main* for the {@link MainButton|main button} or *secondary* for the {@link SecondaryButton|secondary button}.
+   * It can be either *main* for the {@link MainButton| main button} or *secondary* for the {@link SecondaryButton| secondary button}.
    *
    * @readonly
    */
@@ -362,19 +362,19 @@ export interface BottomButton {
 
   /**
    * Current button text.
-   * Set to *Continue* for the {@link MainButton|main button} and *Cancel* for the {@link SecondaryButton|secondary button} by default.
+   * Set to *Continue* for the {@link MainButton| main button} and *Cancel* for the {@link SecondaryButton| secondary button} by default.
    */
   text: string;
 
   /**
    * Current button color.
-   * Set to {@link themeParams.button_color} for the {@link MainButton|main button} and {@link themeParams.bottom_bar_bg_color} for the {@link SecondaryButton|secondary button} by default.
+   * Set to {@link themeParams.button_color} for the {@link MainButton| main button} and {@link themeParams.bottom_bar_bg_color} for the {@link SecondaryButton| secondary button} by default.
    */
   color: string;
 
   /**
    * Current button text color.
-   * Set to {@link themeParams.button_text_color} for the {@link MainButton|main button} and {@link themeParams.button_color} for the {@link SecondaryButton|secondary button} by default.
+   * Set to {@link themeParams.button_text_color} for the {@link MainButton| main button} and {@link themeParams.button_color} for the {@link SecondaryButton| secondary button} by default.
    */
   textColor: string;
 
@@ -396,8 +396,8 @@ export interface BottomButton {
   hasShineEffect: boolean;
 
   /**
-   * Position of the {@link SecondaryButton|secondary button}.
-   * Not defined for the {@link MainButton|main button}.
+   * Position of the {@link SecondaryButton| secondary button}.
+   * Not defined for the {@link MainButton| main button}.
    * It applies only if both the main and secondary buttons are visible.
    * Set to *left* by default.
    *
