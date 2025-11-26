@@ -226,7 +226,7 @@ export interface WebApp {
    * Returns true if the user's app supports a version of the Bot API
    * that is equal to or higher than the version passed as the parameter.
    */
-  isVersionAtLeast(): void;
+  isVersionAtLeast(version: string): void;
 
   /**
    * A method that sets the app header color in the `#RRGGBB` format.
@@ -246,7 +246,7 @@ export interface WebApp {
    *
    * @since Bot API 6.1+
    */
-  setBackgroundColor(): void;
+  setBackgroundColor(color: "bg_color" | "secondary_bg_color" | "bottom_bar_bg_color" | (string & {})): void;
 
   /**
    * A method that sets the app's bottom bar color in the `#RRGGBB` format.
@@ -255,7 +255,7 @@ export interface WebApp {
    *
    * @since Bot API 7.10+
    */
-  setBottomBarColor(): void;
+  setBottomBarColor(color: "bg_color" | "secondary_bg_color" | (string & {})): void;
 
   /**
    * A method that enables a confirmation dialog while the user is trying to close the Mini App.
@@ -324,7 +324,8 @@ export interface WebApp {
   /**
    * A method that prompts the user to add the Mini App to the home screen.
    * After successfully adding the icon, the homeScreenAdded event will be triggered if supported by the device.
-   * Note that if the device cannot determine the installation status, the event may not be received even if the icon has been added.
+   *
+   * @remarks That if the device cannot determine the installation status, the event may not be received even if the icon has been added.
    *
    * @since Bot API 8.0+
    */
@@ -334,25 +335,112 @@ export interface WebApp {
    * A method that checks if adding to the home screen is supported and if the Mini App has already been added.
    * If an optional callback parameter is provided, the callback function will be called with a single argument status,
    * which is a string indicating the home screen status.
+   *
    * Possible values for status are:
-   * - unsupported – the feature is not supported, and it is not possible to add the icon to the home screen,
-   * - unknown – the feature is supported, and the icon can be added, but it is not possible to determine if the icon has already been added,
-   * - added – the icon has already been added to the home screen,
-   * - missed – the icon has not been added to the home screen.
+   * - **unsupported** – the feature is not supported, and it is not possible to add the icon to the home screen,
+   * - **unknown** – the feature is supported, and the icon can be added, but it is not possible to determine if the icon has already been added,
+   * - **added** – the icon has already been added to the home screen,
+   * - **missed** – the icon has not been added to the home screen.
    *
    * @since Bot API 8.0+
    */
-  checkHomeScreenStatus(): void;
+  checkHomeScreenStatus(callback?: (status: "unsupported" | "unknown" | "added" | "missed") => void): void;
 
   /**
    * 	A method that sets the app event handler. Check the list of available events.
    */
-  onEvent(eventType: "themeChanged", eventHandler: () => void): void; //todo fix
+  onEvent(eventType: "activated", eventHandler: ActivatedCallback): void;
+  onEvent(eventType: "deactivated", eventHandler: DeactivatedCallback): void;
+  onEvent(eventType: "themeChanged", eventHandler: ThemeChangedCallback): void;
+  onEvent(eventType: "viewportChanged", eventHandler: ViewportChangedCallback): void;
+  onEvent(eventType: "safeAreaChanged", eventHandler: SafeAreaChangedChangedCallback): void;
+  onEvent(eventType: "contentSafeAreaChanged", eventHandler: ContentSafeAreaChangedCallback): void;
+  onEvent(eventType: "mainButtonClicked", eventHandler: MainButtonClickedCallback): void;
+  onEvent(eventType: "secondaryButtonClicked", eventHandler: SecondaryButtonClickedCallback): void;
+  onEvent(eventType: "backButtonClicked", eventHandler: BackButtonClickedCallback): void;
+  onEvent(eventType: "settingsButtonClicked", eventHandler: SettingsButtonClickedCallback): void;
+  onEvent(eventType: "invoiceClosed", eventHandler: InvoiceClosedCallback): void;
+  onEvent(eventType: "popupClosed", eventHandler: PopupClosedCallback): void;
+  onEvent(eventType: "qrTextReceived", eventHandler: QrTextReceivedCallback): void;
+  onEvent(eventType: "scanQrPopupClosed", eventHandler: ScanQrPopupClosedCallback): void;
+  onEvent(eventType: "clipboardTextReceived", eventHandler: ClipboardTextReceivedCallback): void;
+  onEvent(eventType: "writeAccessRequested", eventHandler: WriteAccessRequestedCallback): void;
+  onEvent(eventType: "contactRequested", eventHandler: ContactRequestedCallback): void;
+  onEvent(eventType: "biometricManagerUpdated", eventHandler: BiometricManagerUpdatedCallback): void;
+  onEvent(eventType: "biometricAuthRequested", eventHandler: BiometricAuthRequestedCallback): void;
+  onEvent(eventType: "biometricTokenUpdated", eventHandler: BiometricTokenUpdatedCallback): void;
+  onEvent(eventType: "fullscreenChanged", eventHandler: FullscreenChangedCallback): void;
+  onEvent(eventType: "fullscreenFailed", eventHandler: FullscreenFailedCallback): void;
+  onEvent(eventType: "homeScreenAdded", eventHandler: HomeScreenAddedCallback): void;
+  onEvent(eventType: "homeScreenChecked", eventHandler: HomeScreenCheckedCallback): void;
+  onEvent(eventType: "accelerometerStarted", eventHandler: AccelerometerStartedCallback): void;
+  onEvent(eventType: "accelerometerStopped", eventHandler: AccelerometerStoppedCallback): void;
+  onEvent(eventType: "accelerometerChanged", eventHandler: AccelerometerChangedCallback): void;
+  onEvent(eventType: "accelerometerFailed", eventHandler: AccelerometerFailedCallback): void;
+  onEvent(eventType: "deviceOrientationStarted", eventHandler: DeviceOrientationStartedCallback): void;
+  onEvent(eventType: "deviceOrientationStopped", eventHandler: DeviceOrientationStoppedCallback): void;
+  onEvent(eventType: "deviceOrientationChanged", eventHandler: DeviceOrientationChangedCallback): void;
+  onEvent(eventType: "deviceOrientationFailed", eventHandler: DeviceOrientationFailedCallback): void;
+  onEvent(eventType: "gyroscopeStarted", eventHandler: GyroscopeStartedCallback): void;
+  onEvent(eventType: "gyroscopeStopped", eventHandler: GyroscopeStoppedCallback): void;
+  onEvent(eventType: "gyroscopeChanged", eventHandler: GyroscopeChangedCallback): void;
+  onEvent(eventType: "gyroscopeFailed", eventHandler: GyroscopeFailedCallback): void;
+  onEvent(eventType: "locationManagerUpdated", eventHandler: LocationManagerUpdatedCallback): void;
+  onEvent(eventType: "locationRequested", eventHandler: LocationRequestedCallback): void;
+  onEvent(eventType: "shareMessageSent", eventHandler: ShareMessageSentCallback): void;
+  onEvent(eventType: "shareMessageFailed", eventHandler: ShareMessageFailedCallback): void;
+  onEvent(eventType: "emojiStatusSet", eventHandler: EmojiStatusSetCallback): void;
+  onEvent(eventType: "emojiStatusFailed", eventHandler: EmojiStatusFailedCallback): void;
+  onEvent(eventType: "emojiStatusAccessRequested", eventHandler: EmojiStatusAccessRequestedCallback): void;
+  onEvent(eventType: "fileDownloadRequested", eventHandler: FileDownloadRequestedCallback): void;
 
   /**
    * A method that deletes a previously set event handler.
    */
-  offEvent(): void;
+  offEvent(eventType: "activated", eventHandler: ActivatedCallback): void;
+  offEvent(eventType: "deactivated", eventHandler: DeactivatedCallback): void;
+  offEvent(eventType: "themeChanged", eventHandler: ThemeChangedCallback): void;
+  offEvent(eventType: "viewportChanged", eventHandler: ViewportChangedCallback): void;
+  offEvent(eventType: "safeAreaChanged", eventHandler: SafeAreaChangedChangedCallback): void;
+  offEvent(eventType: "contentSafeAreaChanged", eventHandler: ContentSafeAreaChangedCallback): void;
+  offEvent(eventType: "mainButtonClicked", eventHandler: MainButtonClickedCallback): void;
+  offEvent(eventType: "secondaryButtonClicked", eventHandler: SecondaryButtonClickedCallback): void;
+  offEvent(eventType: "backButtonClicked", eventHandler: BackButtonClickedCallback): void;
+  offEvent(eventType: "settingsButtonClicked", eventHandler: SettingsButtonClickedCallback): void;
+  offEvent(eventType: "invoiceClosed", eventHandler: InvoiceClosedCallback): void;
+  offEvent(eventType: "popupClosed", eventHandler: PopupClosedCallback): void;
+  offEvent(eventType: "qrTextReceived", eventHandler: QrTextReceivedCallback): void;
+  offEvent(eventType: "scanQrPopupClosed", eventHandler: ScanQrPopupClosedCallback): void;
+  offEvent(eventType: "clipboardTextReceived", eventHandler: ClipboardTextReceivedCallback): void;
+  offEvent(eventType: "writeAccessRequested", eventHandler: WriteAccessRequestedCallback): void;
+  offEvent(eventType: "contactRequested", eventHandler: ContactRequestedCallback): void;
+  offEvent(eventType: "biometricManagerUpdated", eventHandler: BiometricManagerUpdatedCallback): void;
+  offEvent(eventType: "biometricAuthRequested", eventHandler: BiometricAuthRequestedCallback): void;
+  offEvent(eventType: "biometricTokenUpdated", eventHandler: BiometricTokenUpdatedCallback): void;
+  offEvent(eventType: "fullscreenChanged", eventHandler: FullscreenChangedCallback): void;
+  offEvent(eventType: "fullscreenFailed", eventHandler: FullscreenFailedCallback): void;
+  offEvent(eventType: "homeScreenAdded", eventHandler: HomeScreenAddedCallback): void;
+  offEvent(eventType: "homeScreenChecked", eventHandler: HomeScreenCheckedCallback): void;
+  offEvent(eventType: "accelerometerStarted", eventHandler: AccelerometerStartedCallback): void;
+  offEvent(eventType: "accelerometerStopped", eventHandler: AccelerometerStoppedCallback): void;
+  offEvent(eventType: "accelerometerChanged", eventHandler: AccelerometerChangedCallback): void;
+  offEvent(eventType: "accelerometerFailed", eventHandler: AccelerometerFailedCallback): void;
+  offEvent(eventType: "deviceOrientationStarted", eventHandler: DeviceOrientationStartedCallback): void;
+  offEvent(eventType: "deviceOrientationStopped", eventHandler: DeviceOrientationStoppedCallback): void;
+  offEvent(eventType: "deviceOrientationChanged", eventHandler: DeviceOrientationChangedCallback): void;
+  offEvent(eventType: "deviceOrientationFailed", eventHandler: DeviceOrientationFailedCallback): void;
+  offEvent(eventType: "gyroscopeStarted", eventHandler: GyroscopeStartedCallback): void;
+  offEvent(eventType: "gyroscopeStopped", eventHandler: GyroscopeStoppedCallback): void;
+  offEvent(eventType: "gyroscopeChanged", eventHandler: GyroscopeChangedCallback): void;
+  offEvent(eventType: "gyroscopeFailed", eventHandler: GyroscopeFailedCallback): void;
+  offEvent(eventType: "locationManagerUpdated", eventHandler: LocationManagerUpdatedCallback): void;
+  offEvent(eventType: "locationRequested", eventHandler: LocationRequestedCallback): void;
+  offEvent(eventType: "shareMessageSent", eventHandler: ShareMessageSentCallback): void;
+  offEvent(eventType: "shareMessageFailed", eventHandler: ShareMessageFailedCallback): void;
+  offEvent(eventType: "emojiStatusSet", eventHandler: EmojiStatusSetCallback): void;
+  offEvent(eventType: "emojiStatusFailed", eventHandler: EmojiStatusFailedCallback): void;
+  offEvent(eventType: "emojiStatusAccessRequested", eventHandler: EmojiStatusAccessRequestedCallback): void;
+  offEvent(eventType: "fileDownloadRequested", eventHandler: FileDownloadRequestedCallback): void;
 
   /**
    * A method used to send data to the bot.
@@ -360,7 +448,7 @@ export interface WebApp {
    *
    * *This method is only available for Mini Apps launched via a {@link https://core.telegram.org/bots/webapps#keyboard-button-mini-apps| Keyboard button}.*
    */
-  sendData(): void;
+  sendData(data: string): void;
 
   /**
    * A method that inserts the bot's username and the specified inline query in the current chat's input field.
@@ -372,22 +460,22 @@ export interface WebApp {
    *
    * @since Bot API 6.7+
    */
-  switchInlineQuery(): void;
+  switchInlineQuery(query: string, choose_chat_types?: ("users" | "bots" | "groups" | "channels")[]): void;
 
   /**
    * A method that opens a link in an external browser. The Mini App will not be closed.
    * Bot API 6.4+ If the optional options parameter is passed with the field try_instant_view=true, the link will be opened in Instant View mode if possible.
    *
-   * Note that this method can be called only in response to user interaction with the Mini App interface (e.g. a click inside the Mini App or on the main button)
+   * @remarks That this method can be called only in response to user interaction with the Mini App interface (e.g. a click inside the Mini App or on the main button)
    */
-  openLink(): void;
+  openLink(url: string, options?: { try_instant_view?: boolean }): void;
 
   /**
    * A method that opens a telegram link inside the Telegram app. The Mini App will not be closed after this method is called.
    *
    * Up to Bot API 7.0 The Mini App will be closed after this method is called.
    */
-  openTelegramLink(): void;
+  openTelegramLink(url: string): void;
 
   /**
    * A method that opens an invoice using the link url.
@@ -397,7 +485,7 @@ export interface WebApp {
    *
    * @since Bot API 6.1+
    */
-  openInvoice(): void;
+  openInvoice(url: string, callback: (status: "paid" | "cancelled" | "failed" | "pending") => void): void;
 
   /**
    * A method that opens the native story editor with the media specified in the media_url parameter as an HTTPS URL.
@@ -405,7 +493,7 @@ export interface WebApp {
    *
    * @since Bot API 7.8+
    */
-  shareToStory(): void;
+  shareToStory(media_url: string, params?: StoryShareParams): void;
 
   /**
    * A method that opens a dialog allowing the user to share a message provided by the bot.
@@ -416,7 +504,7 @@ export interface WebApp {
    *
    * @since Bot API 8.0+
    */
-  shareMessage(): void;
+  shareMessage(msg_id: number, callback?: (success: boolean) => void): void;
 
   /**
    * A method that opens a dialog allowing the user to set the specified custom emoji as their status.
@@ -430,7 +518,7 @@ export interface WebApp {
    *
    * @since Bot API 8.0+
    */
-  setEmojiStatus(): void;
+  setEmojiStatus(custom_emoji_id: string, params?: EmojiStatusParams, callback?: (success: boolean) => void): void;
 
   /**
    * A method that shows a native popup requesting permission for the bot to manage user's emoji status.
@@ -438,14 +526,14 @@ export interface WebApp {
    *
    * @since Bot API 8.0+
    */
-  requestEmojiStatusAccess(): void;
+  requestEmojiStatusAccess(callback?: (success: boolean) => void): void;
 
   /**
    * A method that displays a native popup prompting the user to download a file specified by the params argument of type DownloadFileParams. If an optional callback parameter is provided, the callback function will be called when the popup is closed, with the first argument as a boolean indicating whether the user accepted the download request.
    *
    * @since Bot API 8.0+
    */
-  downloadFile(): void;
+  downloadFile(params: DownloadFileParams, callback?: (success: boolean) => void): void;
 
   /**
    * A method that hides the on-screen keyboard, if it is currently visible. Does nothing if the keyboard is not active.
@@ -462,7 +550,7 @@ export interface WebApp {
    *
    * @since Bot API 6.2+
    */
-  showPopup(): void;
+  showPopup(params: PopupParams, callback?: (button_id: string) => void): void;
 
   /**
    * A method that shows message in a simple confirmation window with 'OK' and 'Cancel' buttons.
@@ -470,7 +558,7 @@ export interface WebApp {
    *
    * @since Bot API 6.2+
    */
-  showAlert(): void;
+  showAlert(message: string, callback?: () => void): void;
 
   /**
    * A method that shows message in a simple confirmation window with 'OK' and 'Cancel' buttons.
@@ -478,7 +566,7 @@ export interface WebApp {
    *
    * @since Bot API 6.2+
    */
-  showConfirm(): void;
+  showConfirm(message: string, callback?: (success: boolean) => void): void;
 
   /**
    * A method that shows a native popup for scanning a QR code described by the params argument of the type ScanQrPopupParams.
@@ -490,7 +578,7 @@ export interface WebApp {
    *
    * @since Bot API 6.4+
    */
-  showScanQrPopup(): void;
+  showScanQrPopup(params: ScanQrPopupParams, callback?: (data: string) => void): void;
 
   /**
    * A method that closes the native popup for scanning a QR code opened with the showScanQrPopup method.
@@ -512,7 +600,7 @@ export interface WebApp {
    *
    * @since Bot API 6.4+
    */
-  readTextFromClipboard(): void;
+  readTextFromClipboard(callback?: (data: string | null) => void): void;
 
   /**
    * A method that shows a native popup prompting the user for their phone number.
@@ -521,7 +609,7 @@ export interface WebApp {
    *
    * @since Bot API 6.9+
    */
-  requestContact(): void;
+  requestContact(callback?: (success: boolean, response: RequestContactResponse) => void): void;
 
   /**
    * A method that informs the Telegram app that the Mini App is ready to be displayed.
