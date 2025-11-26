@@ -66,7 +66,7 @@ export interface WebApp {
    * *True*, if the Mini App is expanded to the maximum available height.
    * (False*, if the Mini App occupies part of the screen and can be expanded to the full height using the {@link expand| expand()} method.
    */
-  isExpanded:	boolean;
+  isExpanded: boolean;
 
   /**
    * The current height of the visible area of the Mini App.
@@ -222,7 +222,275 @@ export interface WebApp {
    */
   SecureStorage: SecureStorage;
 
-  //todo here
+  /**
+   * Returns true if the user's app supports a version of the Bot API
+   * that is equal to or higher than the version passed as the parameter.
+   */
+  isVersionAtLeast(): void;
+
+  /**
+   * A method that sets the app header color in the `#RRGGBB` format.
+   * You can also use keywords `bg_color` and `secondary_bg_color`.
+   *
+   * Up to Bot API 6.9 You can only pass Telegram.WebApp.themeParams.bg_color
+   * or Telegram.WebApp.themeParams.secondary_bg_color as a color
+   * or bg_color, secondary_bg_color keywords.
+   *
+   * @since Bot API 6.1+
+   */
+  setHeaderColor(color: 'bg_color' | 'secondary_bg_color' | (string & {})): void;
+
+  /**
+   * A method that sets the app background color in the `#RRGGBB` format.
+   * You can also use keywords `bg_color` and `secondary_bg_color`.
+   *
+   * @since Bot API 6.1+
+   */
+  setBackgroundColor(): void;
+
+  /**
+   * A method that sets the app's bottom bar color in the `#RRGGBB` format.
+   * You can also use the keywords `bg_color`, `secondary_bg_color`, and `bottom_bar_bg_color`.
+   * This color is also applied to the navigation bar on Android.
+   *
+   * @since Bot API 7.10+
+   */
+  setBottomBarColor(): void;
+
+  /**
+   * A method that enables a confirmation dialog while the user is trying to close the Mini App.
+   *
+   * @since Bot API 6.2+
+   */
+  enableClosingConfirmation(): void;
+
+  /**
+   * A method that disables the confirmation dialog while the user is trying to close the Mini App.
+   *
+   * @since Bot API 6.2+
+   */
+  disableClosingConfirmation(): void;
+
+  /**
+   * A method that enables vertical swipes to close or minimize the Mini App.
+   * For user convenience, it is recommended to always enable swipes unless they conflict with the Mini App's own gestures.
+   *
+   * @since Bot API 7.7+
+   */
+  enableVerticalSwipes(): void;
+
+  /**
+   * A method that disables vertical swipes to close or minimize the Mini App.
+   * This method is useful if your Mini App uses swipe gestures that may conflict with the gestures for minimizing and closing the app.
+   *
+   * @since Bot API 7.7+
+   */
+  disableVerticalSwipes(): void;
+
+  /**
+   * A method that requests opening the Mini App in fullscreen mode.
+   * Although the header is transparent in fullscreen mode,
+   * it is recommended that the Mini App sets the header color using the setHeaderColor method.
+   * This color helps determine a contrasting color for the status bar and other UI controls.
+   *
+   * @since Bot API 8.0+
+   */
+  requestFullscreen(): void;
+
+  /**
+   * A method that requests exiting fullscreen mode.
+   *
+   * @since Bot API 8.0+
+   */
+  exitFullscreen(): void;
+
+  /**
+   * A method that locks the Mini App’s orientation to its current mode (either portrait or landscape).
+   * Once locked, the orientation remains fixed, regardless of device rotation.
+   * This is useful if a stable orientation is needed during specific interactions.
+   *
+   * @since Bot API 8.0+
+   */
+  lockOrientation(): void;
+
+  /**
+   * A method that unlocks the Mini App’s orientation, allowing it to follow the device's rotation freely.
+   * Use this to restore automatic orientation adjustments based on the device orientation.
+   *
+   * @since Bot API 8.0+
+   */
+  unlockOrientation(): void;
+
+  /**
+   * A method that prompts the user to add the Mini App to the home screen.
+   * After successfully adding the icon, the homeScreenAdded event will be triggered if supported by the device.
+   * Note that if the device cannot determine the installation status, the event may not be received even if the icon has been added.
+   *
+   * @since Bot API 8.0+
+   */
+  addToHomeScreen(): void;
+
+  /**
+   * A method that checks if adding to the home screen is supported and if the Mini App has already been added.
+   * If an optional callback parameter is provided, the callback function will be called with a single argument status,
+   * which is a string indicating the home screen status.
+   * Possible values for status are:
+   * - unsupported – the feature is not supported, and it is not possible to add the icon to the home screen,
+   * - unknown – the feature is supported, and the icon can be added, but it is not possible to determine if the icon has already been added,
+   * - added – the icon has already been added to the home screen,
+   * - missed – the icon has not been added to the home screen.
+   *
+   * @since Bot API 8.0+
+   */
+  checkHomeScreenStatus(): void;
+
+  /**
+   * 	A method that sets the app event handler. Check the list of available events.
+   */
+  onEvent(eventType: "themeChanged", eventHandler: () => void): void; //todo fix
+
+  /**
+   * A method that deletes a previously set event handler.
+   */
+  offEvent(): void;
+
+  /**
+   * A method used to send data to the bot.
+   * When this method is called, a service message is sent to the bot containing the data *data* of the length up to 4096 bytes, and the Mini App is closed. See the field web_app_data in the class Message.
+   *
+   * *This method is only available for Mini Apps launched via a {@link https://core.telegram.org/bots/webapps#keyboard-button-mini-apps| Keyboard button}.*
+   */
+  sendData(): void;
+
+  /**
+   * A method that inserts the bot's username and the specified inline query in the current chat's input field.
+   * Query may be empty, in which case only the bot's username will be inserted.
+   * If an optional choose_chat_types parameter was passed, the client prompts the user to choose a specific chat,
+   * then opens that chat and inserts the bot's username and the specified inline query in the input field.
+   * You can specify which types of chats the user will be able to choose from.
+   * It can be one or more of the following types: users, bots, groups, channels.
+   *
+   * @since Bot API 6.7+
+   */
+  switchInlineQuery(): void;
+
+  /**
+   * A method that opens a link in an external browser. The Mini App will not be closed.
+   * Bot API 6.4+ If the optional options parameter is passed with the field try_instant_view=true, the link will be opened in Instant View mode if possible.
+   *
+   * Note that this method can be called only in response to user interaction with the Mini App interface (e.g. a click inside the Mini App or on the main button)
+   */
+  openLink(): void;
+
+  /**
+   * A method that opens a telegram link inside the Telegram app. The Mini App will not be closed after this method is called.
+   *
+   * Up to Bot API 7.0 The Mini App will be closed after this method is called.
+   */
+  openTelegramLink(): void;
+
+  /**
+   * A method that opens an invoice using the link url.
+   * The Mini App will receive the event invoiceClosed when the invoice is closed.
+   * If an optional callback parameter was passed,
+   * the callback function will be called and the invoice status will be passed as the first argument.
+   *
+   * @since Bot API 6.1+
+   */
+  openInvoice(): void;
+
+  /**
+   * A method that opens the native story editor with the media specified in the media_url parameter as an HTTPS URL.
+   * An optional params argument of the type StoryShareParams describes additional sharing settings.
+   *
+   * @since Bot API 7.8+
+   */
+  shareToStory(): void;
+
+  /**
+   * A method that opens a dialog allowing the user to share a message provided by the bot.
+   * If an optional callback parameter is provided,
+   * the callback function will be called with a boolean as the first argument,
+   * indicating whether the message was successfully sent.
+   * The message id passed to this method must belong to a PreparedInlineMessage previously obtained via the Bot API method savePreparedInlineMessage.
+   *
+   * @since Bot API 8.0+
+   */
+  shareMessage(): void;
+
+  /**
+   * A method that opens a dialog allowing the user to set the specified custom emoji as their status.
+   * An optional params argument of type EmojiStatusParams specifies additional settings, such as duration.
+   * If an optional callback parameter is provided,
+   * the callback function will be called with a boolean as the first argument,
+   * indicating whether the status was set.
+   *
+   * Note: this method opens a native dialog and cannot be used to set the emoji status without manual user interaction.
+   * For fully programmatic changes, you should instead use the Bot API method setUserEmojiStatus after obtaining authorization to do so via the Mini App method requestEmojiStatusAccess.
+   *
+   * @since Bot API 8.0+
+   */
+  setEmojiStatus(): void;
+
+  /**
+   * A method that shows a native popup requesting permission for the bot to manage user's emoji status.
+   * If an optional callback parameter was passed, the callback function will be called when the popup is closed and the first argument will be a boolean indicating whether the user granted this access.
+   *
+   * @since Bot API 8.0+
+   */
+  requestEmojiStatusAccess(): void;
+
+  /**
+   * A method that displays a native popup prompting the user to download a file specified by the params argument of type DownloadFileParams. If an optional callback parameter is provided, the callback function will be called when the popup is closed, with the first argument as a boolean indicating whether the user accepted the download request.
+   *
+   * @since Bot API 8.0+
+   */
+  downloadFile(): void;
+
+  /**
+   * A method that hides the on-screen keyboard, if it is currently visible. Does nothing if the keyboard is not active.
+   *
+   * @since Bot API 9.1+
+   */
+  hideKeyboard(): void;
+
+  /**
+   * A method that shows a native popup described by the params argument of the type PopupParams.
+   * The Mini App will receive the event popupClosed when the popup is closed.
+   * If an optional callback parameter was passed, the callback function will be called
+   * and the field id of the pressed button will be passed as the first argument.
+   *
+   * @since Bot API 6.2+
+   */
+  showPopup(): void;
+
+  /**
+   * A method that shows message in a simple confirmation window with 'OK' and 'Cancel' buttons.
+   * If an optional callback parameter was passed, the callback function will be called when the popup is closed and the first argument will be a boolean indicating whether the user pressed the 'OK' button.
+   *
+   * @since Bot API 6.2+
+   */
+  showAlert(): void;
+
+  /**
+   * A method that shows message in a simple confirmation window with 'OK' and 'Cancel' buttons.
+   * If an optional callback parameter was passed, the callback function will be called when the popup is closed and the first argument will be a boolean indicating whether the user pressed the 'OK' button.
+   *
+   * @since Bot API 6.2+
+   */
+  showConfirm(): void;
+
+  /**
+   * A method that shows a native popup for scanning a QR code described by the params argument of the type ScanQrPopupParams.
+   * The Mini App will receive the event qrTextReceived every time the scanner catches a code with text data.
+   * If an optional callback parameter was passed,
+   * the callback function will be called and the text from the QR code will be passed as the first argument.
+   * Returning true inside this callback function causes the popup to be closed.
+   * Starting from Bot API 7.7, the Mini App will receive the scanQrPopupClosed event if the user closes the native popup for scanning a QR code.
+   *
+   * @since Bot API 6.4+
+   */
+  showScanQrPopup(): void;
 
   /**
    * A method that closes the native popup for scanning a QR code opened with the showScanQrPopup method.
@@ -274,9 +542,6 @@ export interface WebApp {
    * A method that closes the Mini App.
    */
   close(): void;
-
-  //todo fix
-  onEvent(eventType: "themeChanged", eventHandler: () => void): void;
 }
 
 export interface WebAppInitData {}
@@ -425,13 +690,13 @@ export interface BottomButton {
    * A method that sets the button's press event handler.
    * An alias for `Telegram.WebApp.onEvent('mainButtonClicked', callback)`
    */
-  onClick(callback: ()=> void): BottomButton;
+  onClick(callback: () => void): BottomButton;
 
   /**
    * A method that removes the button's press event handler.
    * An alias for `Telegram.WebApp.offEvent('mainButtonClicked', callback)`
    */
-  offClick(callback: ()=> void): BottomButton;
+  offClick(callback: () => void): BottomButton;
 
   /**
    * A method to make the button visible.
