@@ -98,8 +98,7 @@ export interface WebApp {
    * Unlike the value of {@link viewportHeight}, the value of {@link viewportStableHeight} does not change as the position of the Mini App changes with user gestures or during animations.
    * The value of {@link viewportStableHeight} will be updated after all gestures and animations are completed and the Mini App reaches its final size.
    *
-   * @todo
-   * Note the event viewportChanged with the passed parameter `isStateStable=true`,
+   * @remarks The event viewportChanged with the passed parameter `isStateStable=true`,
    * which will allow you to track when the stable state of the height of the visible area changes.
    */
   viewportStableHeight: number;
@@ -239,7 +238,7 @@ export interface WebApp {
    * If an optional callback parameter was passed,
    * the callback function will be called and the text from the clipboard will be passed as the first argument.
    *
-   * Note: this method can be called only for Mini Apps launched from the attachment menu
+   * @remarks This method can be called only for Mini Apps launched from the attachment menu
    * and only in response to a user interaction with the Mini App interface
    * (e.g. a click inside the Mini App or on the main button).
    *
@@ -437,7 +436,7 @@ export interface BottomButton {
   /**
    * A method to make the button visible.
    *
-   * Note that opening the Mini App from the {@link https://core.telegram.org/bots/webapps#launching-mini-apps-from-the-attachment-menu| attachment menu} hides the main button until the user interacts with the Mini App interface.
+   * @remarks That opening the Mini App from the {@link https://core.telegram.org/bots/webapps#launching-mini-apps-from-the-attachment-menu| attachment menu} hides the main button until the user interacts with the Mini App interface.
    */
   show(): BottomButton;
 
