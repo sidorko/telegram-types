@@ -632,9 +632,21 @@ export interface WebApp {
   close(): void;
 }
 
-export interface WebAppInitData {}
-
+/**
+ * Mini Apps can adjust the appearance of the interface to match the Telegram user's app in real time.
+ * This object contains the user's current theme setting
+ */
 export interface ThemeParams {
+  /**
+   * *Optional.*
+   * Secondary background color in the #RRGGBB format.
+   *
+   * @since Bot API 6.1+
+   *
+   * @see Available as the CSS variable `var(--tg-theme-button-color)`.
+   */
+  secondary_bg_color: string;
+
   /**
    * *Optional.*
    * Button color in the `#RRGGBB` format.
@@ -654,9 +666,11 @@ export interface ThemeParams {
   bottom_bar_bg_color: string;
 }
 
-export interface SafeAreaInset {}
+export interface WebAppInitData { }
 
-export interface ContentSafeAreaInset {}
+export interface SafeAreaInset { }
+
+export interface ContentSafeAreaInset { }
 
 /**
  * This object controls the **back** button, which can be displayed in the header of the Mini App in the Telegram interface.
@@ -877,23 +891,23 @@ export interface SettingsButton {
   hide(): SettingsButton;
 }
 
-export interface HapticFeedback {}
+export interface HapticFeedback { }
 
-export interface CloudStorage {}
+export interface CloudStorage { }
 
-export interface BiometricManager {}
+export interface BiometricManager { }
 
-export interface Accelerometer {}
+export interface Accelerometer { }
 
-export interface DeviceOrientation {}
+export interface DeviceOrientation { }
 
-export interface Gyroscope {}
+export interface Gyroscope { }
 
-export interface LocationManager {}
+export interface LocationManager { }
 
-export interface DeviceStorage {}
+export interface DeviceStorage { }
 
-export interface SecureStorage {}
+export interface SecureStorage { }
 
 //todo fix
 export interface BottomButtonParams {
