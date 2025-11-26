@@ -45,7 +45,7 @@ export interface WebApp {
    * The color scheme currently used in the Telegram app.
    * Either “light” or “dark”.
    *
-   * Also, available as the CSS variable `var(--tg-color-scheme)`.
+   * @see available as the CSS variable `var(--tg-color-scheme)`.
    */
   colorScheme: 'light' | 'dark';
 
@@ -71,8 +71,6 @@ export interface WebApp {
   /**
    * The current height of the visible area of the Mini App.
    *
-   * Also, available in CSS as the variable `var(--tg-viewport-height)`.
-   *
    * The application can display just the top part of the Mini App,
    * with its lower part remaining outside the screen area.
    * From this position, the user can “pull” the Mini App to its maximum height,
@@ -83,13 +81,13 @@ export interface WebApp {
    * Please note that the refresh rate of this value is not sufficient to smoothly follow the lower border of the window.
    * It should not be used to pin interface elements to the bottom of the visible area.
    * It's more appropriate to use the value of the {@link viewportStableHeight} field for this purpose.
+   *
+   * @see Available in CSS as the variable `var(--tg-viewport-height)`.
    */
   viewportHeight: number;
 
   /**
    * The height of the visible area of the Mini App in its last stable state.
-   *
-   * Also, available in CSS as a variable `var(--tg-viewport-stable-height)`.
    *
    * The application can display just the top part of the Mini App,
    * with its lower part remaining outside the screen area.
@@ -100,6 +98,8 @@ export interface WebApp {
    *
    * @remarks The event viewportChanged with the passed parameter `isStateStable=true`,
    * which will allow you to track when the stable state of the height of the visible area changes.
+   *
+   * @see Available in CSS as a variable `var(--tg-viewport-stable-height)`.
    */
   viewportStableHeight: number;
 
@@ -639,7 +639,7 @@ export interface ThemeParams {
    * *Optional.*
    * Button color in the `#RRGGBB` format.
    *
-   * Also, available as the CSS variable `var(--tg-theme-button-color)`.
+   * @see Available as the CSS variable `var(--tg-theme-button-color)`.
    */
   button_color: string;
 
@@ -647,7 +647,7 @@ export interface ThemeParams {
    * *Optional.*
    * Bottom background color in the `#RRGGBB` format.
    *
-   * Also, available as the CSS variable `var(--tg-theme-bottom-bar-bg-color)`.
+   * @see Available as the CSS variable `var(--tg-theme-bottom-bar-bg-color)`.
    *
    *  @since Bot API 7.10+
    */
@@ -669,7 +669,8 @@ export interface BackButton {
 
   /**
    * A method that sets the button press event handler.
-   * An alias for `Telegram.WebApp.onEvent('backButtonClicked', callback)`
+   *
+   * @alias Telegram.WebApp.onEvent('backButtonClicked', callback)
    *
    * @since Bot API 6.1+
    */
@@ -677,7 +678,8 @@ export interface BackButton {
 
   /**
    * A method that removes the button press event handler.
-   * An alias for `Telegram.WebApp.onEvent('backButtonClicked', callback)`
+   *
+   * @alias Telegram.WebApp.onEvent('backButtonClicked', callback)
    *
    * @since Bot API 6.1+
    */
@@ -776,13 +778,15 @@ export interface BottomButton {
 
   /**
    * A method that sets the button's press event handler.
-   * An alias for `Telegram.WebApp.onEvent('mainButtonClicked', callback)`
+   *
+   * @alias Telegram.WebApp.onEvent('mainButtonClicked', callback)
    */
   onClick(callback: () => void): BottomButton;
 
   /**
    * A method that removes the button's press event handler.
-   * An alias for `Telegram.WebApp.offEvent('mainButtonClicked', callback)`
+   *
+   * @alias Telegram.WebApp.offEvent('mainButtonClicked', callback)
    */
   offClick(callback: () => void): BottomButton;
 
@@ -842,7 +846,8 @@ export interface SettingsButton {
 
   /**
    * A method that sets the press event handler for the Settings item in the context menu.
-   * An alias for `Telegram.WebApp.onEvent('settingsButtonClicked', callback)`
+   *
+   * @alias Telegram.WebApp.onEvent('settingsButtonClicked', callback)
    *
    * @since Bot API 7.0+
    */
@@ -850,7 +855,8 @@ export interface SettingsButton {
 
   /**
    * A method that removes the press event handler from the Settings item in the context menu.
-   * An alias for `Telegram.WebApp.offEvent('settingsButtonClicked', callback)`
+   *
+   * @alias Telegram.WebApp.offEvent('settingsButtonClicked', callback)
    *
    * @since Bot API 7.0+
    */
